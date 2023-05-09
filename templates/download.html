@@ -1,0 +1,332 @@
+$def with(pic_keyword,search_engine,download_addr,pic_name,pic_num,pic_urls)
+<!DOCTYPE html>
+<html>
+<head>
+  <title>图片下载</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="http://cdn.static.runoob.com/libs/bootstrap/3.3.7/css/bootstrap.min.css">
+    <script src="http://cdn.static.runoob.com/libs/jquery/2.1.1/jquery.min.js"></script>
+    <script src="http://cdn.static.runoob.com/libs/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <script src="https://cdn.bootcdn.net/ajax/libs/twitter-bootstrap/5.0.2/js/bootstrap.bundle.min.js"></script>
+    <style>
+            body {
+                background-image : url('../static/data/Background.png');
+                background-size:100% 100% ;
+                background-attachment: fixed;
+            }
+
+          nav {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background-color: #f9ae06;
+            height: 50px;
+          }
+          ul {
+            list-style-type: none;
+            margin: 0;
+            padding: 0;
+            display: flex;
+          }
+          li {
+            margin: 0 5px;
+          }
+          a {
+            display: block;
+            color: black;
+            text-align: center;
+            padding: 12px 14px;
+            text-decoration: none;
+            transition: all 0.3s ease-in-out;
+          }
+          a:hover {
+            background-color: #f9ae06;
+            color: black;
+            transform: scale(1.1);
+            box-shadow: 0 0 8px #2fa8ff,0 0 0 8px #382127;
+            border: 6px solid #2fa8ff;
+          }
+
+            .image-container {
+              display: flex;
+              flex-wrap: wrap;
+              justify-content: space-between;
+              align-items: center;
+            }
+
+            .image-container img {
+              margin: 5px;
+              max-width: 20%;
+              height: auto;
+            }
+
+            .buttons-group {
+              display: flex;
+              flex-wrap: nowrap;
+            }
+
+            .buttons-group button {
+                margin-right: 10px;
+            }
+
+            .edit-buttons button {
+                margin-right: 10px;
+            }
+
+          .left-button {
+            position: absolute;
+            left: 0;
+            top: 50%;
+            transform: translateY(-50%);
+            background-color: #6650e2;
+            color: black;
+            padding: 14px 16px;
+            text-decoration: none;
+            transition: all 0.3s ease-in-out;
+            border: 2px solid yellow; /* add yellow border */
+          }
+          .left-button:hover {
+            background-color: #8374da;
+            color: black;
+            transform: scale(1.1);
+            box-shadow: 0 0 10px #8374da; /* add box shadow */
+          }
+          .right-button {
+            position: absolute;
+            right: 0;
+            top: 50%;
+            transform: translateY(-50%);
+            background-color: #6650e2;
+            color: black;
+            padding: 14px 16px;
+            text-decoration: none;
+            transition: all 0.3s ease-in-out;
+            border: 2px solid yellow; /* add yellow border */
+          }
+          .right-button:hover {
+            background-color: #8374da;
+            color: black;
+            transform: scale(1.1);
+            box-shadow: 0 0 10px #8374da; /* add box shadow */
+          }
+    </style>
+</head>
+<body>
+
+<nav>
+  <ul>
+      <li><a href="index.html">主页</a></li>
+    <li><a href="download.html">图片下载</a></li>
+    <li><a href="preparedata.html">准备数据</a></li>
+    <li><a href="trainmodel.html">训练模型</a></li>
+    <li><a href="recognition.html">图片识别</a></li>
+  </ul>
+</nav>
+<a href="index.html" class="left-button">返回主页</a>
+<div class="container">
+    <br><br>
+        <div class="panel panel-default">
+            <form action="" method="post" enctype="multipart/form-data" name="myForm" id="myForm">
+                <div class="panel-body">
+                    <div class="panel-heading"><h2 style="text-align: center">图片爬虫面板</h2></div>
+                <div style="height: 50px"></div>
+                <div class="row">
+                    <div class="col-md-6">
+                        <label for="pic_keyword">关键词</label>
+                        <input type="text" class="form-control" id="pic_keyword" name="pic_keyword" placeholder="请输入图片关键词" required value="$pic_keyword">
+                    </div>
+                    <div class="col-md-6">
+                        <label for="search_engine">搜索引擎</label>
+                        <select class="form-control" id="search_engine" name="search_engine">
+                            <option>百度</option>
+                            <option>必应</option>
+                        </select>
+                    </div>
+                </div>
+                <div style="height: 50px"></div>
+                <div class="row">
+                    <div class="col-md-6">
+                        <label for="download_addr">下载目录</label>
+                        <input type="text" class="form-control" id="download_addr" name="download_addr" placeholder="请粘贴本地下载目录" required value="$download_addr">
+                    </div>
+                    <div class="col-md-6">
+                        <label for="pic_name">图片名称</label>
+                        <input type="text" class="form-control" id="pic_name" name="pic_name" placeholder="请输入图片名称" required value="$pic_name">
+                    </div>
+                </div>
+                <div style="height: 50px"></div>
+                <div class="row">
+                    <div class="col-md-6">
+                        <label for="pic_name">图片数量</label>
+                        <input type="number" class="form-control" id="pic_num" name="pic_num" placeholder="请输入要下载的图片数量" required value="$pic_num">
+                    </div>
+                    <div class="col-md-6">
+                        <div style="height: 25px">&nbsp;</div>
+                        <div class="col-md-6">
+                            <div style="text-align: center">
+                                <button type="button" class="btn btn-info" id="resetBtn">重置参数</button>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div style="text-align: center">
+                                <button type="submit" class="btn btn-primary" name="submitBtn1">预览图片</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div style="height: 50px"></div>
+            </div>
+            </form>
+        </div>
+    </div>
+</div>
+<div class="row">
+    <div class="col-md-2"></div>
+    <div class="col-md-4">
+        <div class="buttons-group">
+            <button type="button" class="btn btn-warning" id="editBtn">编辑</button>
+            <button type="button" class="btn btn-primary" id="selectAllBtn">全选</button>
+            <button type="button" class="btn btn-default" id="deselectAllBtn" style="display: none;">取消全选</button>
+            <button type="button" class="btn btn-success" id="downloadAllBtn" style="display: none;">下载选中</button>
+        </div>
+    </div>
+    <div class="col-md-3"></div>
+    <div id="edit-buttons" style="display: none;margin-right: 10px;">
+        <button type="button" class="btn btn-danger" id="deleteBtn">删除选中</button>
+        <button type="button" class="btn btn-default" id="cancelBtn">取消</button>
+    </div>
+</div>
+<div style="height:50px"></div>
+<div class="row">
+    <div class="col-md-2"></div>
+    <div class="col-md-8">
+        <div class="image-container">
+            $for pic_url in pic_urls:
+            <img src="$pic_url" name="pic">
+        </div>
+    </div>
+</div>
+</div>
+<a href="preparedata.html" class="right-button">下一页:准备数据</a>
+    <script>
+      const resetButton = document.querySelector('#resetBtn');
+      const editButton = document.querySelector('#editBtn');
+      const editButtons = document.querySelector('#edit-buttons');
+      const images = document.querySelectorAll('img');
+      const selectAllButton = document.querySelector('#selectAllBtn');
+      const deselectAllButton = document.querySelector('#deselectAllBtn');
+      const downloadAllButton = document.querySelector('#downloadAllBtn');
+      //每张图片设置可被选中
+      let numChecked = 0; // 计数器，用于统计选中的图片数量
+
+      //重置按钮：点击按妞，文本框数据清空
+      resetButton.addEventListener('click', () => {
+            document.getElementById('pic_keyword').value = '';
+            document.getElementById('pic_name').value = '';
+            document.getElementById('pic_num').value = '';
+            document.getElementById('download_addr').value = '';
+      });
+
+      //点击编辑按钮，编辑按钮组显示（删除按钮，取消按钮）
+      editButton.addEventListener('click', () => {
+        editButtons.style.display = 'block';
+      });
+
+      //全选按钮事件：所有图片属性变为checked；所有图片显示红色边框；显示下载按钮；全选按钮消失；取消全选按钮出现
+      selectAllButton.addEventListener('click', () => {
+        images.forEach((image) => {
+          image.classList.toggle('checked');
+          image.style.border = '5px solid red';
+          downloadAllButton.style.display = 'block';
+          numChecked++;
+        });
+        selectAllButton.style.display = 'none';
+        deselectAllButton.style.display = 'block';
+      });
+
+      //取消全选按钮事件：所有图片属性去除checked；所有图片的红色边框消失；下载按钮消失；全选按钮出现；取消全选按钮消失
+      deselectAllButton.addEventListener('click', () => {
+        images.forEach((image) => {
+          if (image.classList.contains('checked')) {
+            image.classList.remove('checked');
+            image.style.border = 'none';
+            downloadAllButton.style.display = 'none';
+            numCheck=0;
+          }
+        });
+        selectAllButton.style.display = 'block';
+        deselectAllButton.style.display = 'none';
+      });
+
+      //删除按钮（点击编辑按钮后出现）：查找所有已选中的图片，删除这些图片；删除按钮和取消按钮消失
+      const deleteButton = document.querySelector('#deleteBtn');
+      deleteButton.addEventListener('click', () => {
+        const checkedImages = document.querySelectorAll('.checked');
+        checkedImages.forEach((image) => {
+          image.remove();
+        });
+        editButtons.style.display = 'none';
+      });
+
+      //取消按钮（点击编辑按钮后出现）：删除按钮和取消按钮消失
+      document.querySelector('#cancelBtn').addEventListener('click', () => {
+        editButtons.style.display = 'none';
+      });
+
+        // 图片点击事件：当图片被点击，图片被选中，同时添加边框；通过numChecked控制downAllButton的出现与消失
+        images.forEach((image) => {
+          image.addEventListener('click', () => {
+            image.classList.toggle('checked');
+            if (image.classList.contains('checked')) {
+              image.style.border = '5px solid red';
+              numChecked++; // 选中的图片数量加1
+            } else {
+              image.style.border = 'none';
+              numChecked--; // 选中的图片数量减1
+            }
+            if (numChecked > 0) {
+              downloadAllButton.style.display = 'block'; // 显示downloadAllButton按钮
+            } else {
+              downloadAllButton.style.display = 'none'; // 隐藏downloadAllButton按钮
+            }
+          });
+        });
+
+        //下载按钮点击事件：获取图片数据和用户输入的参数列表
+        downloadAllButton.addEventListener('click', () => {
+          const data = { images: [] , params : [] }; // 创建JSON数据对象
+          images.forEach((image) => {
+            if (image.classList.contains('checked')) {
+              data.images.push({ url: image.src }); // 将被选中的图片URL添加到JSON数据中
+            }
+          });
+          var pic_keyword = document.querySelector("#pic_keyword")
+          var search_engine = document.querySelector("#search_engine")
+          var download_addr = document.querySelector("#download_addr")
+          var pic_name = document.querySelector("#pic_name")
+          var pic_num = document.querySelector("#pic_num")
+          data.params.push({ p_k : pic_keyword.value , s_e : search_engine.value , d_a : download_addr.value , p_name : pic_name.value , p_num : pic_num.value})
+          fetch('/download.html', {
+            method: 'POST',
+            body: JSON.stringify(data), // 将JSON数据转换为字符串并作为请求体发送
+            headers: {
+              'Content-Type': 'application/json'
+            }
+          })
+            .then((response) => {
+              if (response.ok) {
+                alert('图片下载成功！');
+              } else {
+                alert('图片下载失败！');
+              }
+            })
+            .catch((error) => {
+              console.error(error);
+              alert('图片下载失败！');
+            });
+        });
+
+    </script>
+</body>
+</html>

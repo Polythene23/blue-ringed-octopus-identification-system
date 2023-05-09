@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<title>训练模型</title>
+	<link rel="stylesheet" href="http://cdn.static.runoob.com/libs/bootstrap/3.3.7/css/bootstrap.min.css">
+	<script src="http://cdn.static.runoob.com/libs/jquery/2.1.1/jquery.min.js"></script>
+	<script src="http://cdn.static.runoob.com/libs/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+</head>
+<style>
+
+	.note {
+		background-color:#FFFFCC;
+	}
+
+	.pins {
+		display:flex;
+		justify-content:right;
+	}
+
+	.button-group {
+		display:flex;
+		justify-content:space-between;
+	}
+
+      body {
+        background-image : url('../static/data/Background.png');
+        background-size:100% 100% ;
+        background-attachment: fixed;
+      }
+      nav {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        background-color: #f9ae06; /* changed background color to light blue */
+        height: 50px;
+      }
+      ul {
+        list-style-type: none;
+        margin: 0;
+        padding: 0;
+        display: flex;
+      }
+      li {
+        margin: 0 5px;
+      }
+      a {
+        display: block;
+        color: black;
+        text-align: center;
+        padding: 12px 14px;
+        text-decoration: none;
+        transition: all 0.3s ease-in-out;
+      }
+      a:hover {
+        background-color: #f9ae06;
+        color: black;
+        transform: scale(1.1);
+        box-shadow: 0 0 8px #2fa8ff,0 0 0 8px #382127;
+        border: 6px solid #2fa8ff;
+      }
+
+          .left-button {
+            position: absolute;
+            left: 0;
+            top: 50%;
+            transform: translateY(-50%);
+            background-color: #6650e2;
+            color: black;
+            padding: 14px 16px;
+            text-decoration: none;
+            transition: all 0.3s ease-in-out;
+            border: 2px solid yellow; /* add yellow border */
+          }
+          .left-button:hover {
+            background-color: #8374da;
+            color: black;
+            transform: scale(1.1);
+            box-shadow: 0 0 10px #8374da; /* add box shadow */
+          }
+          .right-button {
+            position: absolute;
+            right: 0;
+            top: 50%;
+            transform: translateY(-50%);
+            background-color: #6650e2;
+            color: black;
+            padding: 14px 16px;
+            text-decoration: none;
+            transition: all 0.3s ease-in-out;
+            border: 2px solid yellow; /* add yellow border */
+          }
+          .right-button:hover {
+            background-color: #8374da;
+            color: black;
+            transform: scale(1.1);
+            box-shadow: 0 0 10px #8374da; /* add box shadow */
+          }
+</style>
+<body>
+<nav>
+  <ul>
+	  <li><a href="index.html">主页</a></li>
+    <li><a href="download.html">图片下载</a></li>
+    <li><a href="preparedata.html">准备数据</a></li>
+    <li><a href="trainmodel.html">训练模型</a></li>
+    <li><a href="recognition.html">图片识别</a></li>
+  </ul>
+</nav>
+<br><br>
+<!-- <form action = "" method="post" enctype="multipart/form-data"></form> -->
+<a href="preparedata.html" class="left-button">上一页：准备数据</a>
+<div class="container">
+	<br><br>
+	<div class="row">
+		<div class="col-sm-6">
+			<div class="panel panel-default">
+				<div class="panel-heading">
+					<h2 style="text-align:center">
+						<b>训练模型面板</b>
+					</h2>
+				</div>
+				<br>
+				<div class="panel-body">
+					<div class="row">
+						<div class="col-sm-1"></div>
+						<div class="col-sm-10">
+							<div class="way">
+								<label for="train_option">训练方式</label>
+								<select class="form-control" id="train_option" name="train_option">
+									<option name="my-option" value="option1">只微调训练模型最后一层</option>
+									<option name="my-option" value="option2">微调训练所有层</option>
+									<option name="my-option" value="option3">随机初始化模型全部权重，从头训练所有层</option>
+								</select>
+							</div><br>
+							<div class="epochs">
+								<label for="epoch">训练次数</label>
+								<input type="text" class="form-control" id="epoch" name="epoch" placeholder="请输入训练次数" required>
+							</div><br>
+							<div class="name">
+								<label for="epoch">模型名称</label>
+								<input type="text" class="form-control" id="model_name" name="model_name" placeholder="请输入模型名称" required>
+							</div><br>
+						</div>
+						<div class="col-sm-1"></div>
+					</div>
+					<br><br>
+					<div class="row">
+						<div class="col-sm-2"></div>
+						<div class="col-sm-8">
+							<div class="button-group">
+								<button type="button" class="btn btn-primary">清空输入</button>
+								<button type="button" class="btn btn-success"  id="start_train">开始训练</button>
+							</div>
+						</div>
+					</div>
+					<br><br><br>
+				</div>
+			</div>
+		</div>
+		<div class="line" style="border-left:2px solid grey;border-right:2px solid grey;">
+		<div class="col-sm-6 note">
+				<div class="pins">
+					<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path fill="currentColor" d="m16 12l2 2v2h-5v6l-1 1l-1-1v-6H6v-2l2-2V5H7V3h10v2h-1v7Zm-7.15 2h6.3L14 12.85V5h-4v7.85L8.85 14ZM12 14Z"/></svg>
+				</div>
+				<div class="note">
+					<h3 style="text-align:center">对于不同数据集选择的微调方式</h3><br>
+					<li><b>数据量少，但数据相似度非常高</b></li>
+					<p>在这种情况下，我们所做的只是修改最后几层或最终的softmax图层的输出类别。</p><br>
+					<li><b>数据量少，数据相似度低</b></li>
+					<p>在这种情况下，我们可以冻结预训练模型的初始层（比如k层），并再次训练剩余的（n-k）层。由于新数据集的相似度较低，因此根据新数据集对较高层进行重新训练具有重要意义。</p><br>
+					<li><b>数据量大，数据相似度低</b></li>
+					<p>在这种情况下，由于我们有一个大的数据集，我们的神经网络训练将会很有效。但是，由于我们的数据与用于训练我们的预训练模型的数据相比有很大不同。使用预训练模型进行的预测不会有效。因此，最好根据你的数据从头开始训练神经网络（Training from scatch）</p><br>
+					<li><b>数据量大，数据相似度高</b></li>
+					<p>这是理想情况。在这种情况下，预训练模型应该是最有效的。使用模型的最好方法是保留模型的体系结构和模型的初始权重。然后，我们可以使用在预先训练的模型中的权重来重新训练该模型。</p>
+				</div>
+		</div>
+		</div>
+	</div>
+</div>
+<a href="recognition.html" class="right-button">下一页：图片识别</a>
+<script>
+	const startTrainButton = document.querySelector('#start_train');
+	//开始训练按钮事件，点击按钮向后台发送用户输入的数据（option和epoch）
+	startTrainButton.addEventListener('click', () => {
+			const data = { params:[] }; //创建json数据对象
+			const train_option = document.querySelector("option[name='my-option']:checked").value
+			var epoch = document.querySelector('#epoch').value
+			data.params.push({ train_option : train_option , epoch : epoch})
+			fetch('/trainmodel.html', {
+				method: 'POST',
+				body: JSON.stringify(data),
+				headers : {
+					'Content-Type' : 'application/json'
+				}
+			})
+			.then((response) => {
+				if (response.ok) {
+					alert('模型训练成功！');
+					startTimer();
+				} else {
+					alert('出错了...数据提交失败！');
+				}
+			})
+			.catch((error) => {
+				console.error(error);
+				alert('出错了...数据提交失败！');
+			})
+	});
+
+</script>
+</body>
+</html>
